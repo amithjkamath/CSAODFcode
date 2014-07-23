@@ -1,3 +1,0 @@
-Include this directory in the dtioutput directory upin which the matlab code operates. 
-
-The addpath feature of matlab is called as addpath('./NIFTImatlab') using a relative address. Take note!

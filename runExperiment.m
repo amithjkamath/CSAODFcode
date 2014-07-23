@@ -14,7 +14,7 @@ gt = gradientTable;
 gt.readFromTxt('samples3SH.txt',s.bvals);
 fprintf('Done! \n');
 
-fprintf('Creating dummy data... ');
+fprintf('Creating dummy data... \n');
 v = volume;
 diffData = createDiffusionData;
 diffData.make(s.fibers, gt.bValues, s.SNR, gt.shellInd, gt.table, pi/2);
@@ -23,7 +23,7 @@ v.imageData(1,1,1,:) = diffData.data;
 v.imageData(1,1,2,:) = diffData.data;
 fprintf('Done! \n');
 
-fprintf('Computing transformation matrix... ');
+fprintf('Computing transformation matrix... \n');
 SH = sphericalHarmonicsMatrix;
 SH.make(gt.table, s.order, 0);
 fprintf('Done! \n');
@@ -32,7 +32,7 @@ fprintf('Processing data... \n');
 ODFdata = s.processVolume(v, gt, SH);
 fprintf('Done! \n');
 
-fprintf('Creating visualization... ');
+fprintf('Creating visualization... \n');
 dataVals = SH.getData(ODFdata.getValues(1,1,1,0,0));
 s.visualizeODF(dataVals,gt.table);
 fprintf('Done! \n');
