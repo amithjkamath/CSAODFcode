@@ -1,4 +1,9 @@
 function [fitresult, gof] = biexpfit(bvals,EE)
+%    BIEXPFIT: this does a bi-exponential fit on the diffusion data. 
+%    bvals is the array of bvalues on which the data is fitted on.
+%    EE is the discrete measured values (measured or evaluated from the shell itself).
+%    This function depends on the Curve Fitting Toolbox from MathWorks.
+
 ft = fittype( 'exp2' );
 opts = fitoptions( ft );
 opts.Display = 'Off';
