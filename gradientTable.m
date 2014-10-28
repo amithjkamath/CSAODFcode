@@ -1,7 +1,16 @@
 classdef gradientTable < hgsetget
-    %UNTITLED Summary of this class goes here
-    %   Detailed explanation goes here
-    
+    %GRADIENTTABLE: class to hold data and allow transformation on the gradient table for Diffusion Tensor Imaging acquisition.
+    %   Constructor:
+    %   gt = gradientTable;
+    %   empty gradient table. You can then initialize data from many different types of sources: scheme files, bval-bvec files or just text files.
+    %   Properties include:
+    %   table: 2D matrix including the x, y, z coordinates of the points where diffusion data is acquired.
+    %   shellInd: If data is acquired on multiple Q-shells, this indicator array includes the index of shells.
+    %   bValues: again, for multiple shell acquisitions, what bValues are they acquired at, is stored here. 
+    %   for example, if acquisition is on three shells at 1000, 2000, 3000 units, bValues is [1000 2000 3000]. 
+    %   This, along with shellInd provides a complete picture of what sample is acquired at what shell.
+    %   Methods include:
+    %   getter for bVecs (table) and read/write functions to scheme files, bval-bvec files and text files. 
     properties
         table = [];
         shellInd = [];
