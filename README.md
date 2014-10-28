@@ -7,3 +7,5 @@ To demonstrate how this works, run the script:
 >>runExperiment.m
 
 This sets up the experiment parameters, creates dummy data to analyze, computes the Spherical Harmonics coefficients based on the gradient table, and computes the transformation matrix, and then processes the data.
+
+Depends on MATLAB and the Curve Fitting Toolbox from MathWorks Inc.
