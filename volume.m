@@ -1,6 +1,11 @@
 classdef volume < hgsetget
-    %UNTITLED Summary of this class goes here
-    %   Detailed explanation goes here
+    %VOLUME holds the 4 D volume of data. This is used to hold both the raw data and the processed SH coefficients.
+    %   Usage notes:
+    %   v = volume; %empty volume just constructed.
+    %   public accessible imageData, accepts either 3D or 4D matrices only.
+    %   properties include the raw 4D volume, and a boolean flag to check if it is 4D or not.
+    %   methods include getting dimensions for calculation, reading and writing NIfTI files, 
+    %   and a custom getter for accessing the element values in the 4th dimension.
     
     properties
         imageData = [];
