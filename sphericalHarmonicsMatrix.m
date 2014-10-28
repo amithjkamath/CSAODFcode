@@ -1,6 +1,12 @@
 classdef sphericalHarmonicsMatrix < hgsetget
-    %UNTITLED Summary of this class goes here
-    %   Detailed explanation goes here
+    %SPHERICALHARMONICSMATRIX: this class holds the coefficients and data for conversion to and from SH domain.
+    %   Constructor:
+    %   sh = sphericalHarmonicsMatrix;
+    %   creates an empty object. We need to populate this with the order, compute the T matrix using bvalues and bvecs.
+    %   Properties include:
+    %   T matrix, pseudo-inverse of the T matrix pT, L, C matrices for the regularization and order to determine the specificlty of the T matrix.
+    %   Methods include:
+    %   make (to make the T matrix from the bvals, bvecs, and several setters and getters for all these properties above.
     
     properties
         T;
