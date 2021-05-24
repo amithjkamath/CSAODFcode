@@ -1,4 +1,4 @@
-classdef csaodfExperiment < hgsetget
+classdef csaodfExperiment < matlab.mixin.SetGet
     % csaodfExperiment
     % Summary of this class goes here
     %   Detailed explanation goes here
@@ -12,7 +12,7 @@ classdef csaodfExperiment < hgsetget
     end
     
     methods
-        function expt = csaodfExperiment(expt)
+        function expt = csaodfExperiment()
             expt.fibers = 1;
             expt.bvals = [];
             expt.SNR = 40;
@@ -28,7 +28,7 @@ classdef csaodfExperiment < hgsetget
             end
         end
         
-        function set.order(expt,inOrder)
+        function set.order(expt, inOrder)
             if(inOrder ~= 4 && inOrder ~= 6 && inOrder ~= 8)
                 error('Order has to be either 4, 6 or 8. No other values are allowed!');
             else
@@ -36,7 +36,7 @@ classdef csaodfExperiment < hgsetget
             end
         end
         
-        function set.SNR(expt,inSNR)
+        function set.SNR(expt, inSNR)
             if(inSNR < 5 || inSNR > 50)
                 error('SNR has to be between 5 and 50. No other values are allowed!');
             else
@@ -44,12 +44,12 @@ classdef csaodfExperiment < hgsetget
             end
         end
         
-        function set.bvals(expt,inBvals)
+        function set.bvals(expt, inBvals)
             % no input validation as of now.
             expt.bvals = inBvals;
         end
         
-        function set.lambda(expt,inLambda)
+        function set.lambda(expt, inLambda)
             % no input validation as of now.
             expt.lambda = inLambda;
         end
@@ -66,9 +66,9 @@ classdef csaodfExperiment < hgsetget
                 error('Third input value must be of class sphericalHarmonicsMatrix.');
             end
             
-            numSH = (expt.order + 1)*(expt.order  +2)/2;
+            numSH = (expt.order + 1)*(expt.order + 2)/2;
             vol = volume;
-            vol.imageData = zeros(v.getxdim,v.getydim,v.getzdim,numSH);
+            vol.imageData = zeros(v.getxdim, v.getydim, v.getzdim, numSH);
             
             for i = 1:v.getxdim
                 for j = 1:v.getydim
@@ -93,7 +93,7 @@ classdef csaodfExperiment < hgsetget
                             if(mod(x,size(gt.table)/20)==0)
                                 fprintf('.');
                             end
-                            fitresult = biexpfit([0; gt.bValues],b0dataInt(x,:)');
+                            fitresult = biexpfit([0; gt.bValues], b0dataInt(x,:)');
                             dataC1(x) = fitresult.a;
                             dataC2(x) = fitresult.c;
                             
@@ -116,7 +116,7 @@ classdef csaodfExperiment < hgsetget
             end
         end
         
-        function visualizeODF(expt, dataPoints, directions)
+        function visualizeODF(~, dataPoints, directions)
             % to do.
             fcs = convhulln(directions);
             
@@ -137,7 +137,7 @@ classdef csaodfExperiment < hgsetget
     end
     
     methods (Access = private)
-        function dataInt = interpolateData(expt, data3X, bvecsI, bvecsO, shellN, order, lambda)
+        function dataInt = interpolateData(~, data3X, bvecsI, bvecsO, shellN, order, lambda)
             nshells = max(shellN);
             
             for ns = 1:nshells

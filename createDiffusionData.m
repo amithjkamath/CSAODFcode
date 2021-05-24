@@ -1,4 +1,4 @@
-classdef createDiffusionData < hgsetget
+classdef createDiffusionData < matlab.mixin.SetGet
     
     properties
         fibers = 1;

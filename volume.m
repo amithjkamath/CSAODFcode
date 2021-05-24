@@ -1,4 +1,4 @@
-classdef volume < hgsetget
+classdef volume < matlab.mixin.SetGet
     %VOLUME holds the 4 D volume of data. This is used to hold both the raw data and the processed SH coefficients.
     %   Usage notes:
     %   v = volume; %empty volume just constructed.

@@ -20,7 +20,7 @@ function [lambda] = getLambda(fibers, bvalue, SNR, order)
         case 4
             switch fibers
                 case 1
-            lambda = [7.629 -0.9839 -2.694 0.04133 0.145 0.2613]*[1 SNR bvalue SNR.^2 SNR*bvalue bvalue.^2]';
+                    lambda = [7.629 -0.9839 -2.694 0.04133 0.145 0.2613]*[1 SNR bvalue SNR.^2 SNR*bvalue bvalue.^2]';
                 case 2
                     lambda = [12.23 -1.603 -4.381 0.06918 0.2333 0.413]*[1 SNR bvalue SNR.^2 SNR*bvalue bvalue.^2]';
                 case 3

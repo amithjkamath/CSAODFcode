@@ -1,4 +1,4 @@
-classdef gradientTable < hgsetget
+classdef gradientTable < matlab.mixin.SetGet
     %GRADIENTTABLE: class to hold data and allow transformation on the gradient table for Diffusion Tensor Imaging acquisition.
     %   Constructor:
     %   gt = gradientTable;

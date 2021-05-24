@@ -1,4 +1,4 @@
-classdef sphericalHarmonicsMatrix < hgsetget
+classdef sphericalHarmonicsMatrix < matlab.mixin.SetGet
     %SPHERICALHARMONICSMATRIX: this class holds the coefficients and data for conversion to and from SH domain.
     %   Constructor:
     %   sh = sphericalHarmonicsMatrix;
