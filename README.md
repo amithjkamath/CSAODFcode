@@ -4,7 +4,7 @@ This is a MATLAB implementation of the CSA ODF Algorithm for white matter fiber 
 
 To demonstrate how this works, run the script:
 
-`runExperiment.m`
+`runExperiment.mlx`
 
 This sets up the experiment parameters, creates dummy data to analyze, computes the Spherical Harmonics coefficients based on the gradient table, and computes the transformation matrix, and then processes the data.
 
@@ -19,5 +19,3 @@ This sets up the experiment parameters, creates dummy data to analyze, computes 
 ## ACKNOWLEDGEMENTS
 
 Depends on MATLAB and the Curve Fitting Toolbox from MathWorks Inc.
-
-Also, thanks due to Jimmy Shen for [NIFTI MATLAB IO code](https://www.mathworks.com/matlabcentral/fileexchange/8797-tools-for-nifti-and-analyze-image). `load_nii` and `save_nii` adapted from this file exchanges submission.

@@ -10,7 +10,7 @@ classdef createDiffusionData < matlab.mixin.SetGet
     end
     
     methods
-        function diff = createDiffusionData(diff)
+        function diff = createDiffusionData()
             diff.fibers = 1;
             diff.bvals = [];
             diff.SNR = 50;
@@ -21,13 +21,13 @@ classdef createDiffusionData < matlab.mixin.SetGet
         function make(diff,fibersIn, bvalsIn, SNRIn, shellNIn, bvecsIn, anglesIn)
             S0_ = 250;
             nshells = max(shellNIn);
-            nbvecs = size(bvecsIn,1);
-            E  = zeros(nbvecs,1);
-            S0 = diff.DTricedist(S0_,S0_/SNRIn,nbvecs);
+            nbvecs = size(bvecsIn, 1);
+            E  = zeros(nbvecs, 1);
+            S0 = diff.DTricedist(S0_, S0_/SNRIn, nbvecs);
             
             if (size(bvalsIn,1) == nshells)
-                [Q1 R1] = qr(eye(3));
-                %[Q1 R1] = qr(rand(3));
+                Q1 = qr(eye(3));
+                %Q1 = qr(rand(3));
                 Q1 = Q1./det(Q1);
                 
                 %Fix the angle of the fibers here. Choose Rand to simulate random fibers
@@ -37,7 +37,7 @@ classdef createDiffusionData < matlab.mixin.SetGet
                 
                 Amp = [1.7 0 0; 0 0.2 0; 0 0 0.2];
                 
-                D1 = Q1*[1.7 0 0; 0 0.2 0; 0 0 0.2]*Q1'.* 10^-3;
+                D1 = Q1*Amp*Q1'.* 10^-3;
                 
                 axis1 = Q1(:,1)';
                 Q2 = diff.rotMatrix(axis1,(pi/2) - angle)*Q1;
@@ -63,21 +63,21 @@ classdef createDiffusionData < matlab.mixin.SetGet
                     end
                 end
                 data3X = E;
-                B0 = diff.DTricedist(S0_,S0_/SNRIn,1);
+                B0 = diff.DTricedist(S0_, S0_/SNRIn, 1);
                 diff.data = data3X./B0;
             end
         end
     end
     
     methods (Access = private)
-        function R = DTricedist(diff, devia, sigma, numpoints)
+        function R = DTricedist(~, devia, sigma, numpoints)
             theta = rand(1);
             x = (sigma).*randn(numpoints,1) + devia*cos(theta);
             y = (sigma).*randn(numpoints,1) + devia*sin(theta);
             R = sqrt(x.^2 + y.^2);
         end
         
-        function outM = rotMatrix(diff, axis, angle)
+        function outM = rotMatrix(~, axis, angle)
             % axis has to be a row vector for this to work.
             % angle in radians please!
             % Rotation is clockwise.

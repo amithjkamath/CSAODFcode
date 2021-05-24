@@ -78,8 +78,7 @@ classdef volume < matlab.mixin.SetGet
         
         %read from NIfTI file.
         function readFromNii(Vol, fileName)
-            niiStruct = load_nii(fileName);
-            Vol.imageData = niiStruct.img;
+            Vol.imageData = niftiread(fileName);
         end
         
         %write a NIfTI file.
