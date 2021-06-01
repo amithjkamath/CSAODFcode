@@ -36,35 +36,41 @@ classdef createDiffusionData < matlab.mixin.SetGet
                 Q1 = Q1./det(Q1);
                 
                 %Fix the angle of the fibers here. Choose Rand to simulate random fibers
-                %upto rnge specified by the multiplier.
+                %upto range specified by the multiplier.
                 
                 angle = anglesIn;
                 
-                Amp = [1.7 0 0; 0 0.2 0; 0 0 0.2];
+                lambda1 = 5.7;
+                lambda2 = 0.2;
+                lambda3 = 0.2;
+                
+                Amp = [lambda1 0 0; 0 lambda2 0; 0 0 lambda3];
                 
                 D1 = Q1*Amp*Q1'.* 10^-3;
                 
                 axis1 = Q1(:,1)';
                 Q2 = diff.rotMatrix(axis1,(pi/2) - angle)*Q1;
                 
-                D2 = Q2*[0.2 0 0; 0 1.7 0; 0 0 0.2]*Q2'.* 10^-3;
+                D2 = Q2*[lambda3 0 0; 0 lambda1 0; 0 0 lambda2]*Q2'.* 10^-3;
                 
                 axis2 = Q2(:,2)';
                 Q3 = diff.rotMatrix(axis2,(pi/2)+angle)*Q2;
                 
-                D3 = Q3*[0.2 0 0; 0 0.2 0; 0 0 1.7]*Q3'.* 10^-3;
+                D3 = Q3*[lambda2 0 0; 0 lambda2 0; 0 0 lambda1]*Q3'.* 10^-3;
                 
                 % Create DWI signal
                 for i=1:nbvecs
                     u = squeeze(bvecsIn(i,:))';
-                    bvalue = bvalsIn(shellNIn(i)); % This is where the bvalue is selected from the shell number specified in the data.
+                    % bvalue selected from the shell number.
+                    bvalue = bvalsIn(shellNIn(i)); 
                     switch fibersIn
                         case 1
-                            E(i) = S0(i) * (exp(-bvalue*u'*D1*u)); % j indexes the number of bvalues for that particular direction, along i.
+                            % j indexes the number of bvalues for that particular direction, along i.
+                            E(i) = S0(i) * (exp(-bvalue*u'*D1*u)); 
                         case 2
-                            E(i) = S0(i) * (0.6*exp(-bvalue*u'*D1*u) + 0.4*exp(-bvalue*u'*D3*u)); % j indexes the number of bvalues for that particular direction, along i.
+                            E(i) = S0(i) * (0.6*exp(-bvalue*u'*D1*u) + 0.4*exp(-bvalue*u'*D2*u));
                         case 3
-                            E(i) = S0(i) * (0.4*exp(-bvalue*u'*D1*u) + 0.3*exp(-bvalue*u'*D3*u) + 0.3*exp(-bvalue*u'*D2*u)); % j indexes the number of bvalues for that particular direction, along i.
+                            E(i) = S0(i) * (0.4*exp(-bvalue*u'*D1*u) + 0.3*exp(-bvalue*u'*D2*u) + 0.3*exp(-bvalue*u'*D3*u));
                     end
                 end
                 data3X = E;
