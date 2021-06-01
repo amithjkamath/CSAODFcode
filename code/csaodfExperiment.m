@@ -74,6 +74,9 @@ classdef csaodfExperiment < matlab.mixin.SetGet
                 for j = 1:v.getydim
                     for k = 1:v.getzdim
                         % Do the data interpolation on the new bvecs directions.
+                        % gt.table is passed in twice in the function below
+                        % because the 'full' estimates are made in the same
+                        % directions as earlier.
                         dataInt = expt.interpolateData(v.getValues(i,j,k,0,0), gt.table, gt.table, gt.shellInd, expt.order, expt.lambda);
                         
                         %Append b0 values to the data. This is done after the interpolation on the new directions, which does not hence interfere with the reconstruction accuracy.
@@ -104,11 +107,13 @@ classdef csaodfExperiment < matlab.mixin.SetGet
                         bvecsN = gt.table(dataC1 ~= 0.5,:);
                         dataModN = dataMod(dataC1 ~= 0.5);
                         
-                        if(bvecsN ~= gt.table)
-                            sh.make(bvecsN,expt.order,0);
+                        if(numel(bvecsN) ~= numel(gt.table))
+                            shN = sphericalHarmonicsMatrix;
+                            shN.make(bvecsN, expt.order, 0);
+                            SH = shN.getODF(dataModN);
+                        else 
+                            SH = sh.getODF(dataModN);
                         end
-                        
-                        SH = sh.getODF(dataModN);
                         vol.imageData(i,j,k,:) = SH;
                         fprintf(' Done!\n');
                     end
@@ -144,12 +149,12 @@ classdef csaodfExperiment < matlab.mixin.SetGet
                 bvecsSH = bvecsI((shellN == ns),:);
                 dataSH = data3X(shellN == ns);
                 sh = sphericalHarmonicsMatrix;
-                sh.make(bvecsSH,order,lambda(ns));
+                sh.make(bvecsSH, order, lambda(ns));
                 sigSH(ns,:) = sh.getCoeff(dataSH);
             end
             
             shO = sphericalHarmonicsMatrix;
-            shO.make(bvecsO,order,0);
+            shO.make(bvecsO, order, 0);
             
             for ns = 1:nshells
                 dataInt(ns,:) = shO.T*sigSH(ns,:)';

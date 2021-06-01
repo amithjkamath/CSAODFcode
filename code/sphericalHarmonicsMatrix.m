@@ -9,62 +9,62 @@ classdef sphericalHarmonicsMatrix < matlab.mixin.SetGet
     %   make (to make the T matrix from the bvals, bvecs, and several setters and getters for all these properties above.
     
     properties
-        T;
-        pT;
-        L;
-        C;
-        order;
+        T
+        pT
+        L
+        C
+        order
     end
     
     methods
-        function Tmat = sphericalHarmonicsMatrix(Tmat)
+        function SH = sphericalHarmonicsMatrix()
             %These are the default properties.
-            Tmat.order = 4;
-            Tmat.T = [];
-            Tmat.pT = [];
-            Tmat.L = [];
-            Tmat.C = [];
+            SH.order = 4;
+            SH.T = [];
+            SH.pT = [];
+            SH.L = [];
+            SH.C = [];
             
         end
         
-        function set.T(Tmat,mat)
-            Tmat.T = mat;
+        function set.T(SH,mat)
+            SH.T = mat;
         end
         
-        function set.pT(Tmat,mat)
-            Tmat.pT = mat;
+        function set.pT(SH,mat)
+            SH.pT = mat;
         end
         
-        function set.order(Tmat,orderIn)
+        function set.order(SH,orderIn)
             if(orderIn ~= 4 && orderIn ~= 6 && orderIn ~= 8)
                 error('Order has to be either 4, 6 or 8. No other values are allowed!');
             else
-                Tmat.order = orderIn;
+                SH.order = orderIn;
             end
         end  
         
-        function make(Tmat, bvecs, ord, lambda)
-            Tmat.order = ord;
-            [Tmat.L,Tmat.C] = Tmat.makeL(ord);             
-            Tmat.createPT(bvecs,ord,lambda);           
+        function make(SH, bvecs, ord, lambda)
+            SH.order = ord;
+            [SH.L, SH.C] = SH.makeL(ord);
+            SH.createPT(bvecs,ord,lambda);
         end
         
-        function data = getData(Tmat, SHCoeff)
-            data = Tmat.T*SHCoeff(:);
+        function data = getData(SH, SHCoeff)
+            data = SH.T*SHCoeff(:);
         end
         
-        function coeff = getCoeff(Tmat, data)
-             coeff = Tmat.pT*data(:);
+        function coeff = getCoeff(SH, data)
+             coeff = SH.pT*data(:);
         end
         
-        function odf = getODF(Tmat, data)
-            odf = (diag(Tmat.C.*Tmat.L/(16*pi^2))*Tmat.pT)*data(:);
+        function odf = getODF(SH, data)
+            odf = (diag(SH.C.*SH.L/(16*pi^2))*SH.pT)*data(:);
             odf(1) = (1/4*pi);
         end        
     end
     
     methods (Access = private)
-        function [L,C] = makeL(Tmat, ord)
+        function [L,C] = makeL(~, ord)
             %Usually order = 4.
             L = zeros((ord+1)*(ord+2)/2, 1); % Zeros of length 15, column vector.
             C = L;
@@ -81,7 +81,7 @@ classdef sphericalHarmonicsMatrix < matlab.mixin.SetGet
             C = 2*pi*C;
         end
         
-        function createPT(Tmat, bvecs, ord, lambda)
+        function createPT(SH, bvecs, ord, lambda)
             %nSH is the number of SH coefficients, equal to 15 if ord = 4.
             %angles is the table for theta and phi, on which the T matrix is
             %calculated.
@@ -103,21 +103,21 @@ classdef sphericalHarmonicsMatrix < matlab.mixin.SetGet
             angles(:,3) = R;
             
             nGrad = size(angles,1); % Number of gradient directions.
-            Tmat.T = zeros(nGrad,nSH); % preallocate.
+            SH.T = zeros(nGrad,nSH); % preallocate.
             for j=1:nSH
                 v = zeros(1,nSH); % preallocate v to be 1 x 15 matrix of zeros.
                 v(j)=1; % Only that element in v is non-zero. Rest are all zeros.
                 for i=1:nGrad
                     % This is the actual SH fitting code. This can be precalculated for a known gradient table.
-                    Tmat.T(i,j) = Tmat.SHvol(v, angles(i,1), angles(i,2));
+                    SH.T(i,j) = SH.SHvol(v, angles(i,1), angles(i,2));
                 end
             end
             %pT = pinv(T); % Calculated as the pseudo inverse of the T matrix. 128x15 and 15x128.
-            Tmat.pT = inv(Tmat.T'*Tmat.T + lambda.*diag(Tmat.L.^2))*Tmat.T';
+            SH.pT = inv(SH.T'*SH.T + lambda.*diag(SH.L.^2))*SH.T';
         end
     
-        function s = SHvol(Tmat, a, theta, phi)
-            L=(sqrt(8*length(a)+1)-3)/2;
+        function s = SHvol(~, a, theta, phi)
+            L = (sqrt(8*length(a)+1)-3)/2;
             s = 0;
             
             for k=0:2:L
@@ -135,6 +135,5 @@ classdef sphericalHarmonicsMatrix < matlab.mixin.SetGet
                 end
             end
         end
-
     end 
 end

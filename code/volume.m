@@ -58,27 +58,20 @@ classdef volume < matlab.mixin.SetGet
         end
         
         function val = getzdim(Vol)
-            % this and getNumSamples has this logic because MATLAB returns
-            % 1 even if there is no such dimension of data. zeros(100,100)
-            % has a size(*,3) = 1, which I think is absurd.
-            if size(Vol.imageData,3) == 1
-                val = 0;
-            else
-                val = size(Vol.imageData,3);
-            end
+            val = size(Vol.imageData,3);
         end        
         
         function val = getNumSamples(Vol)
-            if size(Vol.imageData,4) == 1
-                val = 0;
-            else
-                val = size(Vol.imageData,4);
-            end
+            val = size(Vol.imageData,4);
         end
         
         %read from NIfTI file.
         function readFromNii(Vol, fileName)
-            Vol.imageData = niftiread(fileName);
+            imdata = niftiread(fileName);
+            
+            % First gradient direction is assumed to be B0. 
+            Vol.imageData = imdata(:, :, :, 2:end)./imdata(:, :, :, 1);
+            Vol.imageData = double(Vol.imageData);
         end
         
         %write a NIfTI file.

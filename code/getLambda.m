@@ -67,8 +67,8 @@ function parseInputs(fibers, bvalue, SNR, order)
         error('SNR has to be between 3 and 50 for accurate results.');
     end
     
-    if(bvalue < 500 || bvalue > 10000)
-        error('bvalue must be between 500 and 10000. Other values are not tested for, and will be inaccurate.');
+    if(bvalue < 300 || bvalue > 12000)
+        error('bvalue must be between 300 and 12000. Other values are not tested for, and will be inaccurate.');
     end
 
     if(order ~= 4 && order ~= 6 && order ~= 8)

@@ -98,25 +98,39 @@ classdef gradientTable < matlab.mixin.SetGet
             end
         end
         
-        function readFromBvecBval(GT,bVecFile, bValFile)
-            bvecs = importdata(bVecFile)';
-            bvals = importdata(bValFile)';
+        function readFromBvecBval(GT, bVecFile, bValFile, ignoreFirst)
+            
+            if nargin == 3
+                ignoreFirst = true;
+            end
+            
+            bvecs = importdata(bVecFile);
+            bvals = importdata(bValFile);
             if ~isempty(bvecs) && ~isempty(bvals)
                 if (size(bvecs,1) ~= size(bvals,1))
                     error('Number of samples in bvecs does not match ones in bvals');
                 end
-                GT.table = bvecs;
-                GT.bValues = unique(bvals(:));
-                GT.shellInd = ones(size(bvals,1),1);
-                for i = 1:numel(GT.bValues)
-                    GT.shellInd(bvals == GT.bValues(i)) = i;
+                if ignoreFirst
+                    GT.table = bvecs(2:end, :);
+                    GT.bValues = unique(bvals(2:end));
+                    GT.shellInd = ones(size(GT.table,1), 1); 
+                    for i = 1:numel(GT.bValues)
+                        GT.shellInd(bvals(2:end) == GT.bValues(i)) = i;
+                    end
+                else
+                    GT.table = bvecs;
+                    GT.bValues = unique(bvals(:));
+                    GT.shellInd = ones(size(bvals,1),1);
+                    for i = 1:numel(GT.bValues)
+                        GT.shellInd(bvals == GT.bValues(i)) = i;
+                    end
                 end
                 if( numel(GT.bValues) ~= numel(unique(GT.shellInd)))
                     error('Number of bvalues must match number of shells');
                 end
             else
                 error('Empty txt file. No data saved in gradientTable.');
-            end            
+            end
         end
         
         function writeToSchemeFile(GT, outFileName)

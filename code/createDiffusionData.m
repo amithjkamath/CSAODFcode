@@ -18,12 +18,17 @@ classdef createDiffusionData < matlab.mixin.SetGet
             diff.bvecs = [];
         end
         
-        function make(diff,fibersIn, bvalsIn, SNRIn, shellNIn, bvecsIn, anglesIn)
+        function make(diff, fibersIn, bvalsIn, SNRIn, shellNIn, bvecsIn, anglesIn)
             S0_ = 250;
             nshells = max(shellNIn);
             nbvecs = size(bvecsIn, 1);
             E  = zeros(nbvecs, 1);
             S0 = diff.DTricedist(S0_, S0_/SNRIn, nbvecs);
+            
+            diff.bvals  = bvalsIn;
+            diff.bvecs  = bvecsIn;
+            diff.shellN = shellNIn;
+            diff.SNR    = SNRIn;
             
             if (size(bvalsIn,1) == nshells)
                 Q1 = qr(eye(3));
