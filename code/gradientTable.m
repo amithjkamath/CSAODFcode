@@ -64,6 +64,17 @@ classdef gradientTable < matlab.mixin.SetGet
             GT.bValues = bVals(:);
         end
         
+        function show(GT)
+            figure, hold on
+            pointColor = ['r', 'g', 'b'];
+            for i = 1:numel(GT.bValues)
+                pointsInShell = GT.bValues(i).*GT.table(GT.shellInd == i, :);
+                plot3(pointsInShell(:, 1), pointsInShell(:, 2), pointsInShell(:, 3), 'o', 'Color', pointColor(i))
+            end
+            hold off
+            view(45, 45)
+        end
+        
         function readFromScheme(GT,fileName)
             % scheme files have bvalue info as well.
             dat = importdata(fileName);

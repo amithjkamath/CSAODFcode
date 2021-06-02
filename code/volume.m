@@ -49,20 +49,20 @@ classdef volume < matlab.mixin.SetGet
             end
         end
         
-        function val = getxdim(Vol)
-            val = size(Vol.imageData,1);
+        function val = getxdim(vol)
+            val = size(vol.imageData, 1);
         end
         
-        function val = getydim(Vol)
-            val = size(Vol.imageData,2);
+        function val = getydim(vol)
+            val = size(vol.imageData, 2);
         end
         
-        function val = getzdim(Vol)
-            val = size(Vol.imageData,3);
+        function val = getzdim(vol)
+            val = size(vol.imageData, 3);
         end        
         
-        function val = getNumSamples(Vol)
-            val = size(Vol.imageData,4);
+        function val = getNumSamples(vol)
+            val = size(vol.imageData, 4);
         end
         
         %read from NIfTI file.
@@ -74,21 +74,16 @@ classdef volume < matlab.mixin.SetGet
             Vol.imageData = double(Vol.imageData);
         end
         
-        %write a NIfTI file.
-        function writeToNii(Vol,fileName)
-            error('No support for this for now. ');
-        end
-        
-        function dataVals = getValues(Vol, inX, inY, inZ, shellIdx, shellNum)
+        function dataVals = dataAtVoxel(Vol, inX, inY, inZ, shellIdx, shellNum)
             if isempty(Vol.imageData)
                 error('No data in this volume. Cannot extract any!');
             end
             if(shellNum < 0)
                 error('shellNum must be a positive number.');
             elseif (shellNum == 0 && shellIdx == 0)
-                dataVals = squeeze(Vol.imageData(inX,inY,inZ,:));
+                dataVals = squeeze(Vol.imageData(inX, inY, inZ, :));
             else
-                dataVals = squeeze(Vol.imageData(inX,inY,inZ,shellIdx == shellNum));
+                dataVals = squeeze(Vol.imageData(inX, inY, inZ, shellIdx == shellNum));
             end
         end
     end
