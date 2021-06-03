@@ -5,12 +5,16 @@ function [fitresult, gof] = biexpfit(bvals,EE)
 %    This function depends on the Curve Fitting Toolbox from MathWorks.
 
 ft = fittype( 'exp2' );
+
 opts = fitoptions( ft );
 opts.Display = 'Off';
-opts.Lower = [0 -1 0 -1];
 opts.Robust = 'LAR';
+
 opts.Upper = [1 0 1 0];
-opts.MaxIter = 500; %Higher than the default 400.
+opts.Lower = [0 -1 0 -1];
+
+opts.MaxIter = 800; %Higher than the default 400.
+opts.MaxFunEvals = 800;
 %opts.StartPoint = [0.75 -0.005 0.25 -0.005];
 %opts.Algorithm = 'Levenberg-Marquardt';
 

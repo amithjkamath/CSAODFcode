@@ -213,3 +213,7 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+
+## Data files
+data/HARDI*.nii.gz
+runAnalysisOnTestData2.mlx
